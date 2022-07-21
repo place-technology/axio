@@ -1,6 +1,6 @@
 # axio
 
-TODO: Write a description here
+An API wrapper to the AxiomXa specification.
 
 ## Installation
 
@@ -9,7 +9,7 @@ TODO: Write a description here
    ```yaml
    dependencies:
      axio:
-       github: your-github-user/axio
+       github: place-technology/axio
    ```
 
 2. Run `shards install`
@@ -18,17 +18,16 @@ TODO: Write a description here
 
 ```crystal
 require "axio"
+
+client = Axio::Client.new(base_url: "http://127.0.0.1:60001", username: "test", password: "test")
+
+response = client.access_points.all
+pp JSON.parse(response.body)
 ```
-
-TODO: Write usage instructions here
-
-## Development
-
-TODO: Write development instructions here
 
 ## Contributing
 
-1. Fork it (<https://github.com/your-github-user/axio/fork>)
+1. Fork it (<https://github.com/place-technology/axio/fork>)
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
@@ -36,4 +35,4 @@ TODO: Write development instructions here
 
 ## Contributors
 
-- [Giorgi Kavrelishvili](https://github.com/your-github-user) - creator and maintainer
+- [Giorgi Kavrelishvili](https://github.com/grkek) - creator and maintainer
