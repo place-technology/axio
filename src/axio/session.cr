@@ -7,7 +7,7 @@ module Axio
 
     private property client : Halite::Client = Halite::Client.new
 
-    def initialize(@base_url : String, @access_token : String)
+    def initialize(@base_url : String, @username : String, @password : String)
     end
 
     def request(method : String, url : String, **kwargs) : Halite::Response
@@ -20,10 +20,15 @@ module Axio
 
       absolute_url = URI.parse(@base_url).resolve(url).to_s
 
-      @client.headers({"Authorization" => ["Bearer", @access_token].join(" ")})
       @client.headers({"User-Agent" => @user_agent})
       @client.headers({"Content-Type" => "application/json"})
       @client.timeout single_request_timeout
+
+      url = URI.parse(@base_url).resolve("/v1/login").to_s
+      response = @client.post(url, json: {"Username" => @username, "Password" => @password})
+      body = JSON.parse(response.body)
+
+      @client.headers({"Authorization" => ["Bearer", body["Key"].to_s].join(" ")})
 
       case method
       when "GET"
@@ -38,9 +43,12 @@ module Axio
         raise Exception.new("The request-method type is invalid.")
       end
 
-      raise Exception.new(Constants::STATUS_CODES[response.status_code]) if (300..599).includes?(response.status_code)
-
-      return response
+      case response.status_code
+      when 200
+        return response
+      else
+        raise Exception.new("An exception occured with a status code of #{response.status_code}")
+      end
     end
 
     def get(url : String) : Halite::Response
