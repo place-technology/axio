@@ -44,7 +44,7 @@ module Axio
       end
 
       case response.status_code
-      when 200
+      when 200, 201, 202, 203, 204
         return response
       else
         raise Exception.new("An exception occured with a status code of #{response.status_code}")
