@@ -40,11 +40,11 @@ module Axio
       when "DELETE"
         response = @client.delete absolute_url, **kwargs
       else
-        raise Exception.new("The request-method type is invalid.")
+        raise "The request-method type is invalid."
       end
 
       return response if response.success?
-      raise Exception.new("An exception occured with a status code of #{response.status_code}")
+      raise "An exception occured with a status code of #{response.status_code}"
     end
 
     def get(url : String) : Halite::Response
